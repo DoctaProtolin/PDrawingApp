@@ -11,6 +11,7 @@ ArrayList<Button> hotbar = new ArrayList();
 PVector hotbarPos;
 float hotbarWidth;
 
+TextField colorField;
 
 void setup() {
   size(600, 600, P2D);
@@ -24,7 +25,10 @@ void setup() {
   hotbarPos = new PVector(0, 0);
   hotbarWidth = width;
   
+  colorField = new TextField(100, 100, 250, 40, "Enter fill color", text_field.NUMBER);
+  
   hotbar.add(new Button(0, 0, 0, 0, "Rect Mode", shapes.RECT));
+  hotbar.add(new Button(0, 0, 0, 0, "Set Color", actions.SET_FILL_COLOR));
 }
 
 void draw() {
@@ -34,21 +38,31 @@ void draw() {
 
   if (user.mode == shapes.RECT) {
     tools.rectTool(this);
-    println("tool");
   }
   
   for (Object command : user.commands) {
-    if (command instanceof ColorCommand) {
-      ColorCommand c = (ColorCommand) command;
+    if (command instanceof SetColor) {
+      SetColor c = (SetColor) command;
       
       if (c.mode == colorModes.FILL) {
         fill(c.col);
       }
-    }
-    
-    if (command instanceof Shape) {
+    } else if (command instanceof Shape) {
       ((Shape) command).draw();
     }
+  }
+  
+  
+  if (user.usingInterface) {
+    if (user.mode == actions.SET_FILL_COLOR) {
+      colorField.update();
+      colorField.draw();
+    }
+  
+    fill(0);
+    strokeWeight(1);
+    textSize(15);
+    text("Using UI, not\nadding shapes.", width - 150, height - 100);
   }
 }
 
@@ -57,11 +71,29 @@ void mousePressed() {
     if (b.detectClick()) return; // Don't click multiple buttons
   }
   
-  if (user.mode == shapes.RECT) {
-    user.points.add(new PVector(mouseX, mouseY));
-    print("Added point: ");
-    println(user.points.size());
+  if (!user.usingInterface) {
+    if (user.mode == shapes.RECT) {
+      user.points.add(new PVector(mouseX, mouseY));
+      print("Added point: ");
+      println(user.points.size());
+    }
   }
+}
+
+void keyPressed() {
+  if (user.usingInterface && user.mode == actions.SET_FILL_COLOR) {
+    // colorField.detectKeystroke();
+    if (keyCode == 13) {
+      user.usingInterface = false;
+      user.mode = actions.NONE;
+    }
+  }
+  
+  if (user.usingInterface) {
+    colorField.typed = true;
+  }
+  
+  
 }
 
 boolean pointInBox(float px, float py, float x, float y, float w, float h) {

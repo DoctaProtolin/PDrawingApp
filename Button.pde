@@ -7,7 +7,7 @@ class Button {
   boolean click = false;
   boolean held = false;
 
-  String action = modes.NONE;
+  String action = "";
 
   Text title;
 
@@ -71,10 +71,16 @@ class Button {
 
 void buttonActions(String action) {
   switch (action) {
-  case shapes.RECT:
-    user.mode = action;
-    user.points = new ArrayList();
-    println("Cleared user arraylist for RECT addition");
-    break;
+    case shapes.RECT:
+      user.mode = action;
+      user.points = new ArrayList();
+      user.usingInterface = false;
+      println("Cleared user arraylist for RECT addition");
+      break;
+      
+    case actions.SET_FILL_COLOR:
+      user.mode = actions.SET_FILL_COLOR;
+      user.usingInterface = true;
+      break;
   }
 }

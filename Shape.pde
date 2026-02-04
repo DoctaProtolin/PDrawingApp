@@ -4,9 +4,38 @@ static class shapes {
   static final String ELLIPSE = "ellipse";
 }
 
+static class actions {
+  static final String SET_FILL_COLOR = "set fill color";
+  static final String NONE = "none";
+}
+
 static class colorModes {
   static final String FILL = "fill";
   static final String STROKE = "stroke";
+}
+
+static class user {
+  static String mode = actions.NONE;
+  static ArrayList<PVector> points = new ArrayList<PVector>();
+  static ArrayList<Object> commands = new ArrayList();
+  static boolean usingInterface = false;
+}
+
+static class tools {
+  static void rectTool(PDrawingApp sketch) {
+    sketch.noFill();
+    
+    if (user.points.size() == 1) {
+      PVector p = user.points.get(0);
+      
+      sketch.noFill();
+      sketch.rect(p.x, p.y, sketch.mouseX - p.x, sketch.mouseY - p.y);
+    } else if (user.points.size() == 2) {
+      sketch.addShape(user.points, shapes.RECT);
+      user.points = new ArrayList();
+      println("Added rectangle");
+    }
+  }
 }
 
 class Shape {
@@ -40,7 +69,7 @@ void addShape(ArrayList<PVector> points, String type) {
   user.commands.add(new Shape(points, type));
 }
 
-class ColorCommand {
+class SetColor {
   color col = #ffffff;
   String mode = colorModes.FILL;
 }

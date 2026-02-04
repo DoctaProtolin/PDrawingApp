@@ -7,6 +7,7 @@ How to use
 class Text {
   String data = "";
   float size = 13;
+  color col = #000000;
   
   boolean underline = false;
   PVector pos;
@@ -36,7 +37,7 @@ class Text {
     textSize(size);
     textAlign(LEFT);
     
-    fill(0, 0, 0);
+    fill(col);
     strokeWeight(5);
     text(data, pos.x, pos.y);
     
