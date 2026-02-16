@@ -65,24 +65,7 @@ void mousePressed() {
   if (user.usingInterface) {
     
   } else {
-    
-    switch (user.drawMode) {
-      case DRAW_MODE.RECT:
-        if (user.points.size() == 0) user.points.add(new PVector(mouseX, mouseY));
-        else if (user.points.size() == 1) user.points.add(new PVector(mouseX - user.points.get(0).x, mouseY - user.points.get(0).y));
-        
-        print("Added point: ");
-        println(user.points.size());
-        break;
-      
-      case DRAW_MODE.ELLIPSE:
-        if (user.points.size() == 0) user.points.add(new PVector(mouseX, mouseY));
-        else if (user.points.size() == 1) user.points.add(new PVector((mouseX - user.points.get(0).x) * 2, (mouseY - user.points.get(0).y) * 2));
-        
-        print("Added point: ");
-        println(user.points.size());
-        break;
-    }
+    addShapeInterface();
   }
 }
 
