@@ -11,8 +11,6 @@ ArrayList<Button> hotbar = new ArrayList();
 PVector hotbarPos;
 float hotbarWidth;
 
-TextField colorField;
-
 void setup() {
   size(600, 600, P2D);
   
@@ -24,45 +22,38 @@ void setup() {
   
   hotbarPos = new PVector(0, 0);
   hotbarWidth = width;
-  
-  colorField = new TextField(100, 100, 250, 40, "Enter fill color", text_field.NUMBER);
-  
-  hotbar.add(new Button(0, 0, 0, 0, "Rect Mode", shapes.RECT));
-  hotbar.add(new Button(0, 0, 0, 0, "Set Color", actions.SET_FILL_COLOR));
+
+  hotbar.add(new Button(0, 0, 0, 0, "Rect Mode",    BUTTON_ACTION.RECT_MODE));
+  hotbar.add(new Button(0, 0, 0, 0, "Ellipse Mode",  BUTTON_ACTION.ELLIPSE_MODE));
+  hotbar.add(new Button(0, 0, 0, 0, "Color Mode",   BUTTON_ACTION.COLOR_MODE));
 }
 
 void draw() {
   background(#00ff00);
   
   processHotbar(hotbar);
-
-  if (user.mode == shapes.RECT) {
-    tools.rectTool(this);
-  }
   
-  for (Object command : user.commands) {
-    if (command instanceof SetColor) {
-      SetColor c = (SetColor) command;
+  switch (user.drawMode) {
+    case DRAW_MODE.RECT:
+      tools.rectTool(this);
+      break;
       
-      if (c.mode == colorModes.FILL) {
-        fill(c.col);
-      }
-    } else if (command instanceof Shape) {
-      ((Shape) command).draw();
-    }
+    case DRAW_MODE.ELLIPSE:
+      tools.ellipseTool(this);
+      break;
   }
-  
   
   if (user.usingInterface) {
-    if (user.mode == actions.SET_FILL_COLOR) {
-      colorField.update();
-      colorField.draw();
-    }
-  
     fill(0);
-    strokeWeight(1);
+    //strokeWeight(1);
     textSize(15);
-    text("Using UI, not\nadding shapes.", width - 150, height - 100);
+    text("Using UI", width - 150, height - 100);
+  } else {
+    for (Command command : user.commands) {
+      command.run();
+      
+      println(command.name);
+    }
   }
 }
 
@@ -71,29 +62,38 @@ void mousePressed() {
     if (b.detectClick()) return; // Don't click multiple buttons
   }
   
-  if (!user.usingInterface) {
-    if (user.mode == shapes.RECT) {
-      user.points.add(new PVector(mouseX, mouseY));
-      print("Added point: ");
-      println(user.points.size());
+  if (user.usingInterface) {
+    
+  } else {
+    
+    switch (user.drawMode) {
+      case DRAW_MODE.RECT:
+        if (user.points.size() == 0) user.points.add(new PVector(mouseX, mouseY));
+        else if (user.points.size() == 1) user.points.add(new PVector(mouseX - user.points.get(0).x, mouseY - user.points.get(0).y));
+        
+        print("Added point: ");
+        println(user.points.size());
+        break;
+      
+      case DRAW_MODE.ELLIPSE:
+        if (user.points.size() == 0) user.points.add(new PVector(mouseX, mouseY));
+        else if (user.points.size() == 1) user.points.add(new PVector((mouseX - user.points.get(0).x) * 2, (mouseY - user.points.get(0).y) * 2));
+        
+        print("Added point: ");
+        println(user.points.size());
+        break;
     }
   }
 }
 
 void keyPressed() {
-  if (user.usingInterface && user.mode == actions.SET_FILL_COLOR) {
-    // colorField.detectKeystroke();
-    if (keyCode == 13) {
-      user.usingInterface = false;
-      user.mode = actions.NONE;
-    }
+  
+}
+
+void keyReleased() {
+  if (key == 'l') {
+    //listCommands();
   }
-  
-  if (user.usingInterface) {
-    colorField.typed = true;
-  }
-  
-  
 }
 
 boolean pointInBox(float px, float py, float x, float y, float w, float h) {

@@ -71,16 +71,22 @@ class Button {
 
 void buttonActions(String action) {
   switch (action) {
-    case shapes.RECT:
-      user.mode = action;
+    case BUTTON_ACTION.RECT_MODE:
+      user.drawMode = DRAW_MODE.RECT;
       user.points = new ArrayList();
       user.usingInterface = false;
       println("Cleared user arraylist for RECT addition");
       break;
       
-    case actions.SET_FILL_COLOR:
-      user.mode = actions.SET_FILL_COLOR;
-      user.usingInterface = true;
+    case BUTTON_ACTION.ELLIPSE_MODE:
+      user.drawMode = DRAW_MODE.ELLIPSE;
+      user.points = new ArrayList();
+      user.usingInterface = false;
+      println("Cleared user arraylist for ELLIPSE addition");
+      break;
+      
+    default:
+      println("ERROR :: Unknown button command: " + action);
       break;
   }
 }

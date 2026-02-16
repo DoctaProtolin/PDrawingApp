@@ -1,7 +1,5 @@
 
-
 void processHotbar(ArrayList<Button> hotbar) {
-
   float w = hotbarWidth / hotbar.size();
   float h = 0;
   
@@ -26,7 +24,4 @@ void processHotbar(ArrayList<Button> hotbar) {
   for (Button b : hotbar) {
     b.draw();
   }
-  
-  stroke(#ffffff);
-  
 }
