@@ -19,17 +19,19 @@ class Text {
   }
   
   float width() {
+    textSize(size);
     return textWidth(data);
   }
   
   float height() {
+    textSize(size);
     float fontScalar = 0.9;
     return textAscent() * fontScalar;
   }
   
   void centerText(float x, float y, float w, float h) {
-    pos.x = (2*x + w) / 2 - width()/2;
-    pos.y = (2*y + h) / 2 + height()/2;
+    pos.x = (2*x + w) / 2 - this.width()/2;
+    pos.y = (2*y + h) / 2 + this.height()/2;
   }
   
   void draw() {

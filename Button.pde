@@ -63,7 +63,7 @@ class Button {
     noFill();
     rect(x, y, w, tempH);
 
-    title.draw();
+    this.title.draw();
 
     click = false;
   }

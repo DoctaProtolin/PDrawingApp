@@ -22,8 +22,6 @@ class Command {
   }
   
   void run() {
-    
-    
     switch (name) {
       case COMMAND_NAME.RECT:
       {
@@ -43,6 +41,28 @@ class Command {
         break;
       }
     }
+  }
+  
+  String print() {
+    switch (name) {
+      case COMMAND_NAME.RECT:
+      {
+        PVector pos = points.get(0);
+        PVector size = points.get(1);
+      
+        return "rect(" + pos.x + ", " + pos.y + ", " + size.x + ", " + size.y + ");";
+      }
+        
+      case COMMAND_NAME.ELLIPSE:
+      {
+        PVector pos = points.get(0);
+        PVector size = points.get(1);
+        
+        return "ellipse(" + pos.x + ", " + pos.y + ", " + size.x + ", " + size.y + ");";
+      }
+    }
+    
+    return "// INVALID COMMAND";
   }
 }
 

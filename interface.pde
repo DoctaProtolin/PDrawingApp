@@ -40,7 +40,7 @@ static class tools {
       sketch.ellipse(p.x, p.y, (sketch.mouseX - p.x) * 2, (sketch.mouseY - p.y) * 2);
     } else if (user.points.size() == 2) {
       sketch.addShape(COMMAND_NAME.ELLIPSE, user.points);
-      print(user.commands);
+      //print(user.commands);
       user.points = new ArrayList();
       println("Added ellipse");
     }
