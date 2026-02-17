@@ -63,7 +63,7 @@ class Button {
     noFill();
     rect(x, y, w, tempH);
 
-    this.title.draw();
+    title.draw();
 
     click = false;
   }
@@ -73,14 +73,14 @@ void buttonActions(String action) {
   switch (action) {
     case BUTTON_ACTION.RECT_MODE:
       user.drawMode = DRAW_MODE.RECT;
-      user.points = new ArrayList();
+      user.args = new ArrayList();
       user.usingInterface = false;
       println("Cleared user arraylist for RECT addition");
       break;
       
     case BUTTON_ACTION.ELLIPSE_MODE:
       user.drawMode = DRAW_MODE.ELLIPSE;
-      user.points = new ArrayList();
+      user.args = new ArrayList();
       user.usingInterface = false;
       println("Cleared user arraylist for ELLIPSE addition");
       break;

@@ -2,7 +2,7 @@
 // User data
 static class user {
   static String drawMode = NONE.NONE;
-  static ArrayList<PVector> points = new ArrayList<PVector>();
+  static ArrayList<Float> args = new ArrayList(); // General arguments
   static ArrayList<Command> commands = new ArrayList();
   static boolean usingInterface = false;
 }
@@ -12,18 +12,18 @@ static class tools {
   static void rectTool(PDrawingApp sketch) {
     sketch.noFill();
     
-    if (user.points.size() == 1) {
+    if (user.args.size() == 2) {
       sketch.noFill();
       sketch.strokeWeight(1);
       sketch.stroke(0);
       
-      PVector p = user.points.get(0);
+      PVector p = new PVector(user.args.get(0), user.args.get(1));
       sketch.rect(p.x, p.y, sketch.mouseX - p.x, sketch.mouseY - p.y);
       
-    } else if (user.points.size() == 2) {
+    } else if (user.args.size() == 4) {
       
-      sketch.addShape(COMMAND_NAME.RECT, user.points);
-      user.points = new ArrayList();
+      sketch.addCommand(COMMAND_NAME.RECT, user.args);
+      user.args = new ArrayList();
       println("Added rectangle");
     }
   }
@@ -31,17 +31,17 @@ static class tools {
   static void ellipseTool(PDrawingApp sketch) {
     sketch.noFill();
     
-    if (user.points.size() == 1) {
+    if (user.args.size() == 2) {
       sketch.noFill();
       sketch.strokeWeight(1);
       sketch.stroke(0);
       
-      PVector p = user.points.get(0);
-      sketch.ellipse(p.x, p.y, (sketch.mouseX - p.x) * 2, (sketch.mouseY - p.y) * 2);
-    } else if (user.points.size() == 2) {
-      sketch.addShape(COMMAND_NAME.ELLIPSE, user.points);
+      PVector p = new PVector(user.args.get(0), user.args.get(1));
+      sketch.ellipse((p.x + sketch.mouseX)*0.5, (p.y + sketch.mouseY)*0.5, (sketch.mouseX - p.x), (sketch.mouseY - p.y));
+    } else if (user.args.size() == 4) {
+      sketch.addCommand(COMMAND_NAME.ELLIPSE, user.args);
       //print(user.commands);
-      user.points = new ArrayList();
+      user.args = new ArrayList();
       println("Added ellipse");
     }
   }
@@ -50,19 +50,34 @@ static class tools {
 void addShapeInterface() {
   switch (user.drawMode) {
       case DRAW_MODE.RECT:
-        if (user.points.size() == 0) user.points.add(new PVector(mouseX, mouseY));
-        else if (user.points.size() == 1) user.points.add(new PVector(mouseX - user.points.get(0).x, mouseY - user.points.get(0).y));
+        if (user.args.size() == 0) {
+          user.args.add((float) mouseX);
+          user.args.add((float) mouseY);
+        } else if (user.args.size() == 2) {
+          user.args.add((float) mouseX - user.args.get(0));
+          user.args.add((float) mouseY - user.args.get(1));
+        }
         
         print("Added point: ");
-        println(user.points.size());
+        println(user.args.size());
         break;
       
       case DRAW_MODE.ELLIPSE:
-        if (user.points.size() == 0) user.points.add(new PVector(mouseX, mouseY));
-        else if (user.points.size() == 1) user.points.add(new PVector((mouseX - user.points.get(0).x) * 2, (mouseY - user.points.get(0).y) * 2));
+        if (user.args.size() == 0) {
+          user.args.add((float) mouseX);
+          user.args.add((float) mouseY);
+        } else if (user.args.size() == 2) {
+          user.args.add((float) mouseX);
+          user.args.add((float) mouseY);
+        }
         
         print("Added point: ");
-        println(user.points.size());
+        println(user.args.size());
         break;
     }
+}
+
+void addCommand(String name, ArrayList<Float> points) {
+  println("Adding shape with command name: " + name);
+  user.commands.add(new Command(name, points));
 }

@@ -2,6 +2,7 @@
 static class COMMAND_NAME {
   static final String RECT = "Rect";
   static final String ELLIPSE = "Ellipse";
+  static final String FILL = "Fill";
 }
 
 /*
@@ -12,21 +13,21 @@ static class COMMAND_NAME {
 
 class Command {
   String name;
-  ArrayList<PVector> points;
+  ArrayList<Float> data;
   
-  Command(String n, ArrayList<PVector> _points) {
+  Command(String n, ArrayList<Float> _data) {
     name = n;
     
-    points = new ArrayList<PVector>();
-    for (PVector p : _points) points.add(p);
+    data = new ArrayList();
+    for (float d : _data) data.add(d);
   }
   
   void run() {
     switch (name) {
       case COMMAND_NAME.RECT:
       {
-        PVector pos = points.get(0);
-        PVector size = points.get(1);
+        PVector pos =  new PVector(data.get(0), data.get(1));
+        PVector size = new PVector(data.get(2), data.get(3));
       
         rect(pos.x, pos.y, size.x, size.y);
         break;
@@ -34,12 +35,22 @@ class Command {
         
       case COMMAND_NAME.ELLIPSE:
       {
-        PVector pos = points.get(0);
-        PVector size = points.get(1);
-      
-        ellipse(pos.x, pos.y, size.x, size.y);
+        PVector upperLeft =  new PVector(data.get(0), data.get(1));
+        PVector lowerRight = new PVector(data.get(2), data.get(3));
+         
+        float x = (upperLeft.x + lowerRight.x) * 0.5;
+        float y = (upperLeft.y + lowerRight.y) * 0.5;
+        
+        float w = lowerRight.x - upperLeft.x;
+        float h = lowerRight.y - upperLeft.y;
+        
+        ellipse(x, y, w, h);
         break;
       }
+      
+      case COMMAND_NAME.FILL:
+        //fill(
+        break;
     }
   }
   
@@ -47,29 +58,19 @@ class Command {
     switch (name) {
       case COMMAND_NAME.RECT:
       {
-        PVector pos = points.get(0);
-        PVector size = points.get(1);
+        PVector pos =  new PVector(data.get(0), data.get(1));
+        PVector size = new PVector(data.get(2), data.get(3));
       
         return "rect(" + pos.x + ", " + pos.y + ", " + size.x + ", " + size.y + ");";
       }
         
-      case COMMAND_NAME.ELLIPSE:
-      {
-        PVector pos = points.get(0);
-        PVector size = points.get(1);
-        
-        return "ellipse(" + pos.x + ", " + pos.y + ", " + size.x + ", " + size.y + ");";
-      }
+     
     }
     
     return "// INVALID COMMAND";
   }
 }
 
-void addShape(String name, ArrayList<PVector> points) {
-  println("Adding shape with command name: " + name);
-  user.commands.add(new Command(name, points));
-}
 
 
 
