@@ -49,8 +49,10 @@ class Command {
       }
       
       case COMMAND_NAME.FILL:
-        //fill(
+      {
+        
         break;
+      }
     }
   }
   

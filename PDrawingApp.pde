@@ -11,12 +11,13 @@ ArrayList<Button> hotbar = new ArrayList();
 PVector hotbarPos;
 float hotbarWidth;
 
-Draggable draggable;
+TextField textField;
 
 void setup() {
   size(600, 600, P2D);
   
-  draggable = new Draggable("Drag Queen", width/2, height/2, 100, 50);
+  //draggable = new Draggable("Drag Queen", width/2, height/2, 100, 50);
+  textField = new TextField(width/2 - 100, height/2, 200, 50, "Test placeholder text", TEXT_FIELD.NUMBER, 9);
   
   buttonFade = loadShader("buttonFade.glsl");
   
@@ -47,9 +48,12 @@ void draw() {
       break;
   }
   
-  draggable.draw();
   
   if (user.usingInterface) {
+    
+    textField.update();
+    textField.draw();
+    
     fill(0);
     //strokeWeight(1);
     textSize(15);

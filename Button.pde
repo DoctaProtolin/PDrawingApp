@@ -85,6 +85,12 @@ void buttonActions(String action) {
       println("Cleared user arraylist for ELLIPSE addition");
       break;
       
+    case BUTTON_ACTION.COLOR_MODE:
+      user.usingInterface = true;
+      user.args = new ArrayList();
+      println("Entered color mode");
+      break;
+      
     default:
       println("ERROR :: Unknown button command: " + action);
       break;
