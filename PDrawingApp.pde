@@ -18,6 +18,7 @@ void setup() {
   
   //draggable = new Draggable("Drag Queen", width/2, height/2, 100, 50);
   textField = new TextField(width/2 - 100, height/2, 200, 50, "Test placeholder text", TEXT_FIELD.NUMBER, 9);
+  textField.setFormat(3, 255, ", ");
   
   buttonFade = loadShader("buttonFade.glsl");
   
@@ -78,7 +79,7 @@ void mousePressed() {
 }
 
 void keyPressed() {
-  
+  textField.detectKeystroke();
 }
 
 void keyReleased() {
