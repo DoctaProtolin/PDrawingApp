@@ -108,8 +108,10 @@ class TextField {
         
         if (group.length() < 1) continue; // Don't bother clamping out if a group doesn't exist
         
-        tempContents += Integer.parseInt(group) > formatGroupMaxVal ? Integer.toString(formatGroupMaxVal) : group; // Limit the max value for a group
+        // Limit the max value for a group while reconstructing string
+        tempContents += Integer.parseInt(group) > formatGroupMaxVal ? Integer.toString(formatGroupMaxVal) : group;
         
+        // Add separators back except for the last one
         if (i < groups.length - 1) tempContents += formatSeparator;
       }
       
