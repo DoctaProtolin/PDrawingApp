@@ -19,6 +19,7 @@ void processHotbar(ArrayList<Button> hotbar) {
   
   for (Button b : hotbar) {
     b.update();
+    b.shade = user.drawMode == b.action;
   }
   
   for (Button b : hotbar) {

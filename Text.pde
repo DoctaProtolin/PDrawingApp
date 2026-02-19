@@ -18,6 +18,13 @@ class Text {
     this.pos = new PVector(x, y);
   }
   
+  Text copy() {
+    Text t = new Text(data, pos.x, pos.y, size);
+    t.underline = underline;
+    t.col = col;
+    return t;
+  }
+  
   float width() {
     textSize(size);
     return textWidth(data);

@@ -23,7 +23,10 @@ class TextField {
   boolean typed = false;
   boolean backspaceTyped = false;
   boolean enterTyped = false;
+  boolean escTyped = false;
   int keyRecorded = 0;
+  
+  boolean exit = false;
   
   // Output
   PVector pos;
@@ -63,6 +66,10 @@ class TextField {
 
       case 13:
         enterTyped = true;
+        break;
+        
+      case 27:
+        escTyped = true;
         break;
     }
     
@@ -127,11 +134,16 @@ class TextField {
       display.col = #000000;
     }
     
+    if (escTyped) {
+      exit = true;
+    }
+    
     // Reset values
     if (typed) {
       typed = false;
       backspaceTyped = false;
       enterTyped = false;
+      escTyped = false;
     }
   }
   

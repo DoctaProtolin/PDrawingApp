@@ -1,7 +1,5 @@
 
-
 // Processing Art program attempt
-
 
 PFont font;
 PShader buttonFade;
@@ -29,9 +27,14 @@ void setup() {
   hotbarPos = new PVector(0, 0);
   hotbarWidth = width;
 
-  hotbar.add(new Button(0, 0, 0, 0, "Rect Mode",     BUTTON_ACTION.RECT_MODE));
-  hotbar.add(new Button(0, 0, 0, 0, "Ellipse Mode",  BUTTON_ACTION.ELLIPSE_MODE));
-  hotbar.add(new Button(0, 0, 0, 0, "Color Mode",    BUTTON_ACTION.COLOR_MODE));
+  hotbar.add(new Button("Rect Mode",     DRAW_MODE.RECT_MODE));
+  hotbar.add(new Button("Ellipse Mode",  DRAW_MODE.ELLIPSE_MODE));
+  
+  ArrayList<Button> tempButtons = new ArrayList();
+  
+  tempButtons.add(new Button("Fill Color", DRAW_MODE.FILL_MODE));
+  
+  hotbar.add(new Dropdown("Color Mode", tempButtons));
 }
 
 void draw() {
@@ -40,35 +43,44 @@ void draw() {
   processHotbar(hotbar);
   
   switch (user.drawMode) {
-    case DRAW_MODE.RECT:
+    case DRAW_MODE.RECT_MODE:
       tools.rectTool(this);
       break;
       
-    case DRAW_MODE.ELLIPSE:
+    case DRAW_MODE.ELLIPSE_MODE:
       tools.ellipseTool(this);
       break;
   }
   
+  for (Command command : user.commands) {
+      command.run();
+  }
   
   if (user.usingInterface) {
-    
     textField.update();
     textField.draw();
+    
+    if (textField.exit) {
+      user.usingInterface = false;
+    }
     
     fill(0);
     //strokeWeight(1);
     textSize(15);
     text("Using UI", width - 150, height - 100);
-  } else {
-    for (Command command : user.commands) {
-      command.run();
-    }
   }
 }
 
 void mousePressed() {
   for (Button b : hotbar) {
     if (b.detectClick()) return; // Don't click multiple buttons
+    
+    // Check buttons in dropdown menus
+    if (b instanceof Dropdown) {
+      for (Button c : ((Dropdown) b).buttons) {
+        if (c.detectClick()) return;
+      }
+    }
   }
   
   if (user.usingInterface) {
@@ -80,6 +92,7 @@ void mousePressed() {
 
 void keyPressed() {
   textField.detectKeystroke();
+  if (key == ESC) key = 0;
 }
 
 void keyReleased() {

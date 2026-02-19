@@ -49,7 +49,7 @@ static class tools {
 
 void addShapeInterface() {
   switch (user.drawMode) {
-      case DRAW_MODE.RECT:
+      case DRAW_MODE.RECT_MODE:
         if (user.args.size() == 0) {
           user.args.add((float) mouseX);
           user.args.add((float) mouseY);
@@ -62,7 +62,7 @@ void addShapeInterface() {
         println(user.args.size());
         break;
       
-      case DRAW_MODE.ELLIPSE:
+      case DRAW_MODE.ELLIPSE_MODE:
         if (user.args.size() == 0) {
           user.args.add((float) mouseX);
           user.args.add((float) mouseY);
