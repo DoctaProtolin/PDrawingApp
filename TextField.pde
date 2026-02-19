@@ -27,6 +27,7 @@ class TextField {
   int keyRecorded = 0;
   
   boolean exit = false;
+  boolean submit = false;
   
   // Output
   PVector pos;
@@ -42,6 +43,14 @@ class TextField {
     this.maxLength = maxLength;
     
     display = new Text(placeholder, pos.x + 5, pos.y + size.y - 5, 15);
+  }
+  
+  void reset() {
+    contents = "";
+    display.data = placeholder;
+    
+    exit = false;
+    submit = false;
   }
   
   // Require entering the number first, since that determines whether or not it bothers with formatting in the conditonal
@@ -63,7 +72,8 @@ class TextField {
       case 8:
         backspaceTyped = true;
         break;
-
+      
+      case 10: // For my laptop, anyway
       case 13:
         enterTyped = true;
         break;
@@ -77,6 +87,8 @@ class TextField {
   }
   
   void update() {
+    
+    // TODO: Doesn't actually max out group values, just DISPLAYS those values
     
     if (typed) {
       if (type == TEXT_FIELD.NUMBER && keyRecorded >= 48 && keyRecorded <= 57 && contents.length() < maxLength) {
@@ -136,15 +148,13 @@ class TextField {
     
     if (escTyped) {
       exit = true;
-    }
-    
-    // Reset values
-    if (typed) {
-      typed = false;
-      backspaceTyped = false;
-      enterTyped = false;
-      escTyped = false;
-    }
+    } else if (enterTyped) submit = true;
+
+    // Reset    
+    typed = false;
+    backspaceTyped = false;
+    enterTyped = false;
+    escTyped = false;
   }
   
   void draw() {

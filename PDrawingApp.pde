@@ -9,14 +9,12 @@ ArrayList<Button> hotbar = new ArrayList();
 PVector hotbarPos;
 float hotbarWidth;
 
-TextField textField;
-
 void setup() {
   size(600, 600, P2D);
   
   //draggable = new Draggable("Drag Queen", width/2, height/2, 100, 50);
-  textField = new TextField(width/2 - 100, height/2, 200, 50, "Test placeholder text", TEXT_FIELD.NUMBER, 9);
-  textField.setFormat(3, 255, ", ");
+  user.colorField = new TextField(width/2 - 100, height/2, 200, 50, "Test placeholder text", TEXT_FIELD.NUMBER, 9);
+  user.colorField.setFormat(3, 255, ", ");
   
   buttonFade = loadShader("buttonFade.glsl");
   
@@ -50,6 +48,10 @@ void draw() {
     case DRAW_MODE.ELLIPSE_MODE:
       tools.ellipseTool(this);
       break;
+      
+    case DRAW_MODE.FILL_MODE:
+      tools.fillTool(this);
+      break;
   }
   
   for (Command command : user.commands) {
@@ -57,10 +59,10 @@ void draw() {
   }
   
   if (user.usingInterface) {
-    textField.update();
-    textField.draw();
+    user.colorField.update();
+    user.colorField.draw();
     
-    if (textField.exit) {
+    if (user.colorField.exit) {
       user.usingInterface = false;
     }
     
@@ -91,7 +93,7 @@ void mousePressed() {
 }
 
 void keyPressed() {
-  textField.detectKeystroke();
+  user.colorField.detectKeystroke();
   if (key == ESC) key = 0;
 }
 

@@ -22,6 +22,7 @@ class Command {
     for (float d : _data) data.add(d);
   }
   
+  // TODO: Add print arg to this function
   void run() {
     switch (name) {
       case COMMAND_NAME.RECT:
@@ -50,26 +51,10 @@ class Command {
       
       case COMMAND_NAME.FILL:
       {
-        
+        fill(data.get(0), data.get(1), data.get(2));
         break;
       }
     }
-  }
-  
-  String print() {
-    switch (name) {
-      case COMMAND_NAME.RECT:
-      {
-        PVector pos =  new PVector(data.get(0), data.get(1));
-        PVector size = new PVector(data.get(2), data.get(3));
-      
-        return "rect(" + pos.x + ", " + pos.y + ", " + size.x + ", " + size.y + ");";
-      }
-        
-     
-    }
-    
-    return "// INVALID COMMAND";
   }
 }
 

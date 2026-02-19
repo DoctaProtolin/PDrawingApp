@@ -107,6 +107,7 @@ void buttonActions(String action) {
       
     case DRAW_MODE.FILL_MODE:
       user.usingInterface = true;
+      user.drawMode = DRAW_MODE.FILL_MODE;
       user.args = new ArrayList();
       println("Entered color mode");
       break;

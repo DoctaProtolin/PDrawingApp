@@ -5,6 +5,7 @@ static class user {
   static ArrayList<Float> args = new ArrayList(); // General arguments
   static ArrayList<Command> commands = new ArrayList();
   static boolean usingInterface = false;
+  static TextField colorField; // Set in setup();
 }
 
 // These functions are always called depending on what tool is selected. They show a preview of the shape.
@@ -43,6 +44,41 @@ static class tools {
       //print(user.commands);
       user.args = new ArrayList();
       println("Added ellipse");
+    }
+  }
+  
+  static void fillTool(PDrawingApp sketch) {
+    if (user.colorField.submit) {
+      if (user.colorField.contents.length() == 9) {
+        
+        ArrayList<Float> args = new ArrayList();
+        String contents = user.colorField.contents;
+        
+        float val = 0;
+        for (int i = 0; i < 9; i ++) {
+          int j = 2 - (i % 3);
+          val += (contents.charAt(i) - 48) * pow(10, j);
+          
+          print(j);
+          println(" " + val);
+          
+          if (j == 0) {
+            args.add(val);
+            val = 0;
+          }
+        }
+        
+        println(args);
+        
+        sketch.addCommand(COMMAND_NAME.FILL, args);
+        
+        user.colorField.reset();
+        user.args = new ArrayList();
+        user.usingInterface = false;
+        println("Confirmed contents submitted");
+      } else {
+        user.colorField.submit = false;
+      }
     }
   }
 }
