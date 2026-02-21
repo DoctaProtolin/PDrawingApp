@@ -88,8 +88,6 @@ class TextField {
   
   void update() {
     
-    // TODO: Doesn't actually max out group values, just DISPLAYS those values
-    
     if (typed) {
       if (type == TEXT_FIELD.NUMBER && keyRecorded >= 48 && keyRecorded <= 57 && contents.length() < maxLength) {
         contents += Character.toString((char) keyRecorded);
@@ -102,6 +100,31 @@ class TextField {
     // Backspace
     if (backspaceTyped && contents.length() > 0) {
       contents = contents.substring(0, contents.length() - 1);
+    }
+    
+    if (formatGroupMaxVal > 0 && type == TEXT_FIELD.NUMBER) {
+      ArrayList<String> groups = new ArrayList();
+      String group = "";
+      
+      for (int i = 0; i < contents.length(); i ++) {
+        group += contents.charAt(i);
+        
+        // Last case for if the last group is shorter than the max length
+        if (group.length() == formatGroupLength || i == contents.length() - 1) {
+          groups.add(group);
+          group = "";
+        }
+      }
+      
+      contents = "";
+      
+      for (int i = 0; i < groups.size(); i ++) {
+        group = groups.get(i);
+        if (group.length() < 1) continue; // Don't bother clamping out if a group doesn't exist
+        
+        // Limit the max value for a group while reconstructing string
+        contents += Integer.parseInt(group) > formatGroupMaxVal ? Integer.toString(formatGroupMaxVal) : group;
+      }
     }
     
     // Format text into groups (i.e. phone numbers or colors)
@@ -117,25 +140,6 @@ class TextField {
       
     } else displayContents = contents;
     
-    if (formatGroupMaxVal > 0 && type == TEXT_FIELD.NUMBER) {
-      String[] groups = split(displayContents, formatSeparator);
-      
-      String tempContents = "";
-      
-      for (int i = 0; i < groups.length; i ++) {
-        String group = groups[i];
-        
-        if (group.length() < 1) continue; // Don't bother clamping out if a group doesn't exist
-        
-        // Limit the max value for a group while reconstructing string
-        tempContents += Integer.parseInt(group) > formatGroupMaxVal ? Integer.toString(formatGroupMaxVal) : group;
-        
-        // Add separators back except for the last one
-        if (i < groups.length - 1) tempContents += formatSeparator;
-      }
-      
-      displayContents = tempContents;
-    }
     
     // Set text style and data based on emptiness
     if (contents.length() == 0) {
