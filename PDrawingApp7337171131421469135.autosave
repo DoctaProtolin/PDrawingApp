@@ -54,8 +54,8 @@ void draw() {
       break;
   }
   
-  for (Layer layer : user.layers) {
-      layer.execute();
+  for (Command command : user.layers.get(user.layerIndex)) {
+      command.run();
   }
   
   if (user.usingInterface) {

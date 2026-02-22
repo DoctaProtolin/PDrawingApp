@@ -3,8 +3,10 @@
 static class user {
   static String drawMode = NONE.NONE;
   static ArrayList<Float> args = new ArrayList(); // General arguments
-  static ArrayList<Layer> layers = new ArrayList();
-  static int currLayer = 0;
+  
+  static ArrayList<ArrayList<Command>> layers = new ArrayList();
+  static int layerIndex = 0;
+  
   static boolean usingInterface = false;
   static TextField colorField; // Set in setup();
 }
@@ -114,7 +116,7 @@ void addShapeInterface() {
     }
 }
 
-void addCommand(String name, ArrayList<Float> points) {
-  println("Adding shape with command name '" + name + "' to layer '" + user.currLayer + "'");
-  user.layers.get(user.currLayer).add(new Command(name, points));
+void addCommand(int layerIndex, String name, ArrayList<Float> points) {
+  println("Adding shape with command name: " + name);
+  user.commands.add(new Command(name, points));
 }
