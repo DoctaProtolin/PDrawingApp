@@ -4,7 +4,7 @@ static class user {
   static String drawMode = NONE.NONE;
   static ArrayList<Float> args = new ArrayList(); // General arguments
   static ArrayList<Layer> layers = new ArrayList();
-  static int currLayer = 0;
+  static int currLayerIndex = 0;
   static boolean usingInterface = false;
   static TextField colorField; // Set in setup();
 }
@@ -115,8 +115,22 @@ void addShapeInterface() {
 }
 
 void addCommand(String name, ArrayList<Float> points) {
-  println("Adding shape with command name '" + name + "' to layer '" + user.currLayer + "'");
-  user.layers.get(user.currLayer).add(new Command(name, points));
+  println("Adding shape with command name '" + name + "' to layer '" + user.currLayerIndex + "'");
+  
+  int len = user.layers.size();
+  
+  if (user.layers.size() == 0) {
+    Layer currLayer = new Layer();
+    currLayer.add(new Command(name, points));
+    user.layers.add(currLayer);
+    
+    return;
+  } else if (user.currLayerIndex >= len || user.currLayerIndex < 0) {
+    println("ERROR :: Layer index out of bounds: Requested index " + user.currLayerIndex + " (size of array is " + len + ")");
+    return;
+  }
+  
+  user.layers.get(user.currLayerIndex).add(new Command(name, points));
 }
 
 
