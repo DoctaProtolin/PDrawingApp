@@ -36,6 +36,24 @@ class Button {
     this.action = a;
   }
   
+  void setWidth(float newWidth) {
+    
+    if (this.w == 0) {
+      this.w = newWidth;
+      return;
+    }
+    
+    float scale = newWidth / this.w;
+    
+    title.size *= scale;
+    this.w *= scale;
+    println(scale);
+  }
+  
+  void setHeight() {
+    
+  }
+  
   Button copy() {
     Button b = new Button(x, y, w, h, "", action);
     b.title = title.copy();

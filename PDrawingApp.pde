@@ -39,6 +39,7 @@ void draw() {
   background(#00ff00);
   
   processHotbar(hotbar);
+  //drawLayerUI(width - 100, 150, 100, 300);
   
   switch (user.drawMode) {
     case DRAW_MODE.RECT_MODE:
@@ -55,7 +56,7 @@ void draw() {
   }
   
   for (Layer layer : user.layers) {
-      layer.execute();
+    layer.execute();
   }
   
   if (user.usingInterface) {
@@ -106,3 +107,21 @@ void keyReleased() {
 boolean pointInBox(float px, float py, float x, float y, float w, float h) {
   return px >= x && px <= x + w && py >= y && py <= y + h;
 }
+
+
+
+/*
+public float textWidth(String str, float size) {
+  float w = 0;
+  char[] c = str.toCharArray();
+  for (int i = 0; i < c.length; i++) {
+    // call draw on each char (pulling it w/ the unicode table)
+    FontGlyph fg = unicodeGlyphs.get(Character.valueOf(c[i]));
+    if (fg != null) {
+      w += (float) fg.horizAdvX / face.unitsPerEm;
+    }
+  }
+  return w * size;
+}
+  
+*/

@@ -9,12 +9,10 @@ void processHotbar(ArrayList<Button> hotbar) {
     b.x = hotbarPos.x + i * w;
     b.y = hotbarPos.y;
     
-    b.w = w;
+    b.setWidth(w);
     b.h = 50;
-  }
-  
-  for (Button b : hotbar) {
-    if (h < b.title.height()) h = b.title.height();
+    
+    
   }
   
   for (Button b : hotbar) {
